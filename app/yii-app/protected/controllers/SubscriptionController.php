@@ -22,6 +22,42 @@ class SubscriptionController extends Controller
     }
 
     /**
+     * Displays a particular subscription.
+     * @param integer $id the ID of the model to be displayed
+     */
+    public function actionView($id)
+    {
+        if (Yii::app()->user->isGuest) {
+            throw new CHttpException(403, 'Access denied');
+        }
+
+        $model = $this->loadModel($id);
+        $this->render('view', array(
+            'model' => $model,
+        ));
+    }
+
+    /**
+     * Lists all subscriptions
+     */
+    public function actionIndex()
+    {
+        if (Yii::app()->user->isGuest) {
+            throw new CHttpException(403, 'Access denied');
+        }
+
+        $model = new Subscription('search');
+        $model->unsetAttributes();
+        if (isset($_GET['Subscription'])) {
+            $model->attributes = $_GET['Subscription'];
+        }
+
+        $this->render('index', array(
+            'model' => $model,
+        ));
+    }
+
+    /**
      * Subscribe to an author
      * @param integer $author_id
      */
@@ -98,6 +134,32 @@ class SubscriptionController extends Controller
     }
 
     /**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id the ID of the model to be updated
+     */
+    public function actionUpdate($id)
+    {
+        if (Yii::app()->user->isGuest) {
+            throw new CHttpException(403, 'Access denied');
+        }
+
+        $model = $this->loadModel($id);
+
+        if (isset($_POST['Subscription'])) {
+            $model->attributes = $_POST['Subscription'];
+            if ($model->save()) {
+                Yii::app()->user->setFlash('success', 'Подписка успешно обновлена');
+                $this->redirect(array('view', 'id' => $model->id));
+            }
+        }
+
+        $this->render('update', array(
+            'model' => $model,
+        ));
+    }
+
+    /**
      * Delete subscription
      * @param integer $id
      */
@@ -119,5 +181,20 @@ class SubscriptionController extends Controller
         } else {
             throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
         }
+    }
+
+    /**
+     * Returns the data model based on the primary key given in the GET variable.
+     * @param integer $id the ID of the model to be loaded
+     * @return Subscription the loaded model
+     * @throws CHttpException
+     */
+    public function loadModel($id)
+    {
+        $model = Subscription::model()->findByPk($id);
+        if ($model === null) {
+            throw new CHttpException(404, 'The requested page does not exist.');
+        }
+        return $model;
     }
 }

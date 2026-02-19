@@ -9,6 +9,7 @@ $this->breadcrumbs=array(
 $this->menu=array(
 	array('label'=>'Create Author', 'url'=>array('create'), 'visible'=>!Yii::app()->user->isGuest),
 	array('label'=>'Manage Authors', 'url'=>array('admin'), 'visible'=>!Yii::app()->user->isGuest),
+	array('label'=>'Manage Subscriptions', 'url'=>array('subscription/index'), 'visible'=>!Yii::app()->user->isGuest),
 );
 
 ?>

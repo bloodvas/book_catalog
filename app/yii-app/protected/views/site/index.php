@@ -15,7 +15,8 @@ $this->pageTitle=Yii::app()->name;
     <ul>
         <li><?php echo CHtml::link('Просмотреть все книги', array('/book/index')); ?></li>
         <li><?php echo CHtml::link('Просмотреть всех авторов', array('/author/index')); ?></li>
-        <li><?php echo CHtml::link('Подписаться на уведомления о новых книгах', array('/subscription/index')); ?></li>
+        <li><?php echo CHtml::link('Подписаться на SMS-уведомления о новых книгах', array('/subscription/create'), array('class' => 'btn-link')); ?></li>
+        <li><?php echo CHtml::link('Управление подписками', array('/subscription/index')); ?></li>
         <li><?php echo CHtml::link('ТОП-10 авторов по количеству книг', array('/report/topAuthors')); ?></li>
     </ul>
     
@@ -31,6 +32,7 @@ $this->pageTitle=Yii::app()->name;
         <li><?php echo CHtml::link('Создать новую книгу', array('/book/create')); ?></li>
         <li><?php echo CHtml::link('Создать нового автора', array('/author/create')); ?></li>
         <li><?php echo CHtml::link('ТОП-10 авторов', array('/report/topAuthors')); ?></li>
+        <li><?php echo CHtml::link('О проекте', array('/site/page&view=about')); ?></li>
     </ul>
     
     <p><?php echo CHtml::link('Выйти из системы', array('/site/logout'), array('class' => 'btn btn-secondary')); ?></p>

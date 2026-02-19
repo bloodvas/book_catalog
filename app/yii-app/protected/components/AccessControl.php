@@ -21,6 +21,7 @@ class AccessControl extends CFilter
                 'site/index',
                 'site/contact',
                 'site/login',
+                'site/page',
                 'report/topAuthors',
                 'report/exportTopAuthors',
                 'report/index',
@@ -34,8 +35,10 @@ class AccessControl extends CFilter
                 'site/logout',
                 'site/index',
                 'site/contact',
+                'site/page',
                 'report/*',
                 'sms/*',
+                'subscription/*',
             ),
         );
         
