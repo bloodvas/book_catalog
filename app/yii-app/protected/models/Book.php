@@ -91,6 +91,13 @@ class Book extends CActiveRecord
         $criteria->compare('created_at',$this->created_at,true);
         $criteria->compare('updated_at',$this->updated_at,true);
 
+        // Handle author_ids filter
+        if (!empty($this->author_ids)) {
+            $criteria->with = array('authors');
+            $criteria->together = true;
+            $criteria->addInCondition('authors.id', $this->author_ids);
+        }
+
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
         ));

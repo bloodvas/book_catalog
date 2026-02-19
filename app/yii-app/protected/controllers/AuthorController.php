@@ -28,11 +28,16 @@ class AuthorController extends Controller
     public function actionView($id)
     {
         $model = $this->loadModel($id);
+        
+        // Get books through the many-many relationship
         $booksDataProvider = new CActiveDataProvider('Book', array(
             'criteria' => array(
-                'with' => 'authors',
-                'condition' => 'authors.id = :author_id',
-                'params' => array(':author_id' => $id),
+                'with' => array(
+                    'authors' => array(
+                        'condition' => 'authors.id = :author_id',
+                        'params' => array(':author_id' => $id),
+                    ),
+                ),
             ),
         ));
 
