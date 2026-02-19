@@ -40,7 +40,7 @@ class Book extends CActiveRecord
             array('title, isbn, cover_image', 'length', 'max'=>255),
             array('isbn', 'unique'),
             array('description', 'safe'),
-            array('cover_image', 'file', 'types'=>'jpg, jpeg, png, gif', 'allowEmpty'=>true),
+            array('cover_image', 'file', 'types'=>'jpg, jpeg, png, gif', 'allowEmpty'=>true, 'maxSize'=>50*1024*1024, 'tooLarge'=>'Файл слишком большой. Максимальный размер 50MB.'),
             array('author_ids', 'safe'),
             array('id, title, year, description, isbn, cover_image, created_at, updated_at, author_ids', 'safe', 'on'=>'search'),
         );
