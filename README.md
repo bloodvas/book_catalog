@@ -143,6 +143,66 @@ book_catalog/
 - `subscriptions` - подписки на уведомления
 - `users` - пользователи системы
 
+## Миграции базы данных
+
+Миграции выполняются автоматически при первом запуске. Каждая миграция создает или изменяет структуру базы данных.
+
+### Список миграций:
+
+1. **m240219_000001_create_authors_table.php** (19.02.2024)
+   - Создает таблицу `authors`
+   - Поля: `id` (PK), `full_name`, `created_at`, `updated_at`
+   - Индекс: `idx_authors_full_name` по полю `full_name`
+
+2. **m240219_000002_create_books_table.php** (19.02.2024)
+   - Создает таблицу `books`
+   - Поля: `id` (PK), `title`, `year`, `description`, `isbn`, `cover_image`, `created_at`, `updated_at`
+   - Индексы: `idx_books_title`, `idx_books_year`, `idx_books_isbn`
+
+3. **m240219_000003_create_book_authors_table.php** (19.02.2024)
+   - Создает таблицу `book_authors` (связующая)
+   - Поля: `book_id`, `author_id`
+   - Первичный ключ: `(book_id, author_id)`
+   - Примечание: SQLite не поддерживает внешние ключи, ограничения обрабатываются на уровне приложения
+
+4. **m240219_000004_create_subscriptions_table.php** (19.02.2024)
+   - Создает таблицу `subscriptions`
+   - Поля: `id` (PK), `author_id`, `phone`, `created_at`
+   - Индекс: `idx_subscriptions_phone_author` по полям `phone, author_id`
+   - Примечание: Уникальность номера телефона для одного автора
+
+5. **m240219_000005_create_users_table.php** (19.02.2024)
+   - Создает таблицу `users`
+   - Поля: `id` (PK), `username`, `password`, `created_at`, `updated_at`
+   - Уникальный индекс: `username`
+   - Создает администратора по умолчанию: `admin` / `admin123`
+
+### Выполнение миграций:
+
+```bash
+# Применить все миграции
+docker exec book_catalog_app php protected/yiic.php migrate
+
+# Применить конкретную миграцию
+docker exec book_catalog_app php protected/yiic.php migrate m240219_000001_create_authors_table
+
+# Откатить последнюю миграцию
+docker exec book_catalog_app php protected/yiic.php migrate down
+
+# Откатить до конкретной миграции
+docker exec book_catalog_app php protected/yiic.php migrate down 5
+```
+
+### Создание новой миграции:
+
+```bash
+# Создать файл новой миграции
+docker exec book_catalog_app php protected/yiic.php migrate create create_new_table
+
+# Сгенерировать миграцию из базы данных
+docker exec book_catalog_app php protected/yiic.php migrate schema
+```
+
 ## Разработка
 
 ### Локальная разработка:
@@ -151,7 +211,7 @@ book_catalog/
 2. Просмотрите логи: `docker compose logs -f app`
 3. Перезапустите сервис: `docker compose restart app`
 
-### Миграции базы данных:
+### Миграции базы данных
 
 Миграции выполняются автоматически при первом запуске.
 
