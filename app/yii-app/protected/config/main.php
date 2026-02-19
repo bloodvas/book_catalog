@@ -56,7 +56,7 @@ return array(
 
 		'smspilot'=>array(
 			'class'=>'SMSpilot',
-			'apiKey'=>'Y4M8I5654RK4M4Z6H300MPVJO5FFVH32QESJE8PSY7EZ969F61DT015N820V416D',
+			'apiKey'=>'YOUR_API_KEY',
 			'sender'=>'INFORM',
 			'testMode'=>true, // Set to false for production
 		),
