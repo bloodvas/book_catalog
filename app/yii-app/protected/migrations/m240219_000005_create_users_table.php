@@ -9,8 +9,8 @@ class m240219_000005_create_users_table extends CDbMigration
             'username' => 'varchar(255) NOT NULL UNIQUE',
             'password' => 'varchar(255) NOT NULL',
             'created_at' => 'timestamp DEFAULT CURRENT_TIMESTAMP',
-            'updated_at' => 'timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
-        ), 'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4');
+            'updated_at' => 'timestamp DEFAULT CURRENT_TIMESTAMP',
+        ));
         
         // Create default admin user
         $this->insert('users', array(
