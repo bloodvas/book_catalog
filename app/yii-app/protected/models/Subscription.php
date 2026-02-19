@@ -93,11 +93,6 @@ class Subscription extends CActiveRecord
      */
     public function notifyNewBook($book)
     {
-        // TODO: Implement SMS notification using SMSpilot API
-        // For now, just log the notification
-        Yii::log("SMS notification sent to {$this->phone} about new book: {$book->title}", 'info');
-        
-        // SMS implementation will be added in later stage
-        return true;
+        return SMSNotificationService::notifyNewBook($this, $book);
     }
 }

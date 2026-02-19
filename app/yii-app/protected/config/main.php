@@ -54,6 +54,13 @@ return array(
 		// database settings are configured in database.php
 		'db'=>require(dirname(__FILE__).'/database.php'),
 
+		'smspilot'=>array(
+			'class'=>'SMSpilot',
+			'apiKey'=>'EMULATOR', // Use EMULATOR for testing, replace with real key for production
+			'sender'=>'BookCatalog',
+			'testMode'=>true, // Set to false for production
+		),
+
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
 			'errorAction'=>YII_DEBUG ? null : 'site/error',

@@ -34,6 +34,7 @@ class AccessControl extends CFilter
                 'site/index',
                 'site/contact',
                 'report/*',
+                'sms/*',
             ),
         );
         
