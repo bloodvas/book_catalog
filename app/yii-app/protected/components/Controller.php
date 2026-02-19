@@ -20,4 +20,25 @@ class Controller extends CController
 	 * for more details on how to specify this property.
 	 */
 	public $breadcrumbs=array();
+	
+	/**
+	 * @return array action filters
+	 */
+	public function filters()
+	{
+		return array(
+			'accessControl',
+		);
+	}
+	
+	/**
+	 * Specifies the access control rules.
+	 * This method is used by the 'accessControl' filter.
+	 * @return array access control rules
+	 */
+	public function filterAccessControl($filterChain)
+	{
+		$access = new AccessControl();
+		$access->filter($filterChain);
+	}
 }
