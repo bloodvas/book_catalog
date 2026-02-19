@@ -105,7 +105,7 @@ class Book extends CActiveRecord
     }
     
     /**
-     * After save - handle many-to-many relationship
+     * After save - handle many-to-many relationship and notify subscribers
      */
     protected function afterSave()
     {
@@ -124,6 +124,11 @@ class Book extends CActiveRecord
                     $bookAuthor->save();
                 }
             }
+        }
+        
+        // Notify subscribers about new book
+        if ($this->isNewRecord) {
+            BookObserver::notifySubscribers($this);
         }
     }
     
