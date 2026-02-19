@@ -16,6 +16,9 @@
  */
 class Author extends CActiveRecord
 {
+    // Virtual property for reports
+    public $book_count;
+    
     /**
      * @return string the associated database table name
      */

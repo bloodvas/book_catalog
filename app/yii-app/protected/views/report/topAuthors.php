@@ -41,6 +41,19 @@ $this->menu=array(
 		<?php echo $form->error($model,'author_id'); ?>
 	</div>
 
+	<!-- Future expansion filters -->
+	<div class="row">
+		<?php echo $form->label($model,'min_books'); ?>
+		<?php echo $form->textField($model,'min_books'); ?>
+		<?php echo $form->error($model,'min_books'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'max_books'); ?>
+		<?php echo $form->textField($model,'max_books'); ?>
+		<?php echo $form->error($model,'max_books'); ?>
+	</div>
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton('Показать', array('class'=>'btn btn-primary')); ?>
 	</div>
@@ -63,12 +76,11 @@ $this->menu=array(
 				'value' => 'CHtml::link(CHtml::encode($data->full_name), array("author/view", "id"=>$data->id))',
 			),
 			'book_count' => array(
-				'name' => 'book_count',
 				'header' => 'Количество книг',
 				'type' => 'html',
-				'value' => '<span class="badge">' . $data->book_count . '</span>',
+				'value' => '"<span class=\\"badge\\">" . $data->book_count . "</span>"',
 			),
-			'actions' => array(
+			array(
 				'header' => 'Действия',
 				'type' => 'raw',
 				'value' => 'CHtml::link("Просмотреть книги", array("book/index", "Book[author_ids]"=>$data->id), array("class"=>"btn btn-small"))',

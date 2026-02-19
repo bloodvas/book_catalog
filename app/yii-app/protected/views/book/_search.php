@@ -33,7 +33,7 @@
 
 	<div class="row">
 		<?php echo $form->label($model,'author_ids'); ?>
-		<?php echo $form->dropDownList($model,'author_ids', CHtml::listData(Author::model()->findAll(), 'id', 'full_name'), array('empty'=>'All Authors')); ?>
+		<?php echo $form->dropDownList($model,'author_ids', CHtml::listData(Author::model()->findAll(), 'id', 'full_name'), array('empty'=>'All Authors', 'multiple'=>true)); ?>
 	</div>
 
 	<div class="row buttons">

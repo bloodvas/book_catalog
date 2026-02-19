@@ -52,13 +52,13 @@ class ReportForm extends CFormModel
         $years = array();
         $currentYear = date('Y');
         
-        // Get years from database
-        $criteria = new CDbCriteria();
-        $criteria->select = 'MIN(year) as min_year, MAX(year) as max_year';
-        $result = Book::model()->find($criteria);
+        // Get years from database using raw SQL
+        $sql = "SELECT MIN(year) as min_year, MAX(year) as max_year FROM books";
+        $command = Yii::app()->db->createCommand($sql);
+        $result = $command->queryRow();
         
-        if ($result) {
-            for ($year = $result->max_year; $year >= $result->min_year; $year--) {
+        if ($result && $result['min_year']) {
+            for ($year = $result['max_year']; $year >= $result['min_year']; $year--) {
                 $years[$year] = $year;
             }
         } else {
