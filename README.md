@@ -163,7 +163,6 @@ book_catalog/
    - Создает таблицу `book_authors` (связующая)
    - Поля: `book_id`, `author_id`
    - Первичный ключ: `(book_id, author_id)`
-   - Примечание: SQLite не поддерживает внешние ключи, ограничения обрабатываются на уровне приложения
 
 4. **m240219_000004_create_subscriptions_table.php** (19.02.2024)
    - Создает таблицу `subscriptions`

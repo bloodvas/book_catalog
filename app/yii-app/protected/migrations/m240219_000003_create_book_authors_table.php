@@ -9,14 +9,12 @@ class m240219_000003_create_book_authors_table extends CDbMigration
             'author_id' => 'int NOT NULL',
             'PRIMARY KEY (book_id, author_id)',
         ));
-        
-        // SQLite doesn't support adding foreign keys to existing tables
+
         // Foreign key constraints will be handled at application level
     }
 
     public function down()
     {
-        // SQLite doesn't support foreign keys
         $this->dropTable('book_authors');
     }
 }
