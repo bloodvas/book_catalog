@@ -6,7 +6,8 @@
  */
 class ReportForm extends CFormModel
 {
-    public $year;
+    public $year_from;
+    public $year_to;
     public $genre;
     public $author_id;
     public $publisher;
@@ -19,8 +20,8 @@ class ReportForm extends CFormModel
     public function rules()
     {
         return array(
-            array('year', 'required'),
-            array('year', 'numerical', 'integerOnly'=>true, 'min'=>1900, 'max'=>date('Y')+1),
+            array('year_from, year_to', 'numerical', 'integerOnly'=>true, 'min'=>1900, 'max'=>date('Y')+1),
+            array('year_from', 'compare', 'compareAttribute'=>'year_to', 'operator'=>'<=', 'message'=>'Начальный год должен быть меньше или равен конечному году'),
             array('genre', 'length', 'max'=>100),
             array('publisher', 'length', 'max'=>255),
             array('author_id', 'numerical', 'integerOnly'=>true),
@@ -35,7 +36,8 @@ class ReportForm extends CFormModel
     public function attributeLabels()
     {
         return array(
-            'year' => 'Год',
+            'year_from' => 'Год с',
+            'year_to' => 'Год по',
             'genre' => 'Жанр',
             'author_id' => 'Автор',
             'publisher' => 'Издательство',
@@ -69,6 +71,23 @@ class ReportForm extends CFormModel
         }
         
         return $years;
+    }
+    
+    /**
+     * Get default year from (current year - 5)
+     */
+    public function getDefaultYearFrom()
+    {
+        $currentYear = date('Y');
+        return $currentYear - 5;
+    }
+    
+    /**
+     * Get default year to (current year)
+     */
+    public function getDefaultYearTo()
+    {
+        return date('Y');
     }
     
     /**

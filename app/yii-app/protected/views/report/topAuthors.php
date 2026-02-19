@@ -9,7 +9,7 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'Export to CSV', 'url'=>array('exportTopAuthors', 'ReportForm'=>$_GET), 'linkOptions'=>array('target'=>'_blank')),
+	array('label'=>'Export to CSV', 'url'=>array('exportTopAuthors'), 'linkOptions'=>array('target'=>'_blank')),
 );
 ?>
 
@@ -18,14 +18,20 @@ $this->menu=array(
 <div class="search-form">
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'report-form',
-	'method'=>'get',
+	'method'=>'post',
 	'enableAjaxValidation'=>false,
 )); ?>
 
 	<div class="row">
-		<?php echo $form->label($model,'year'); ?>
-		<?php echo $form->dropDownList($model,'year', $model->getYearOptions()); ?>
-		<?php echo $form->error($model,'year'); ?>
+		<?php echo $form->label($model,'year_from'); ?>
+		<?php echo $form->dropDownList($model,'year_from', $model->getYearOptions(), array('empty'=>'Выберите год')); ?>
+		<?php echo $form->error($model,'year_from'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'year_to'); ?>
+		<?php echo $form->dropDownList($model,'year_to', $model->getYearOptions(), array('empty'=>'Выберите год')); ?>
+		<?php echo $form->error($model,'year_to'); ?>
 	</div>
 
 	<!-- Future expansion filters -->
@@ -63,7 +69,7 @@ $this->menu=array(
 
 <?php if ($dataProvider !== null): ?>
 <div class="report-results">
-	<h2>Результаты за <?php echo CHtml::encode($model->year); ?> год</h2>
+	<h2>Результаты за <?php echo CHtml::encode($model->year_from . ' - ' . $model->year_to); ?></h2>
 	
 	<?php $this->widget('zii.widgets.grid.CGridView', array(
 		'id'=>'top-authors-grid',
@@ -91,9 +97,15 @@ $this->menu=array(
 	)); ?>
 	
 	<div class="export-section">
-		<p><?php echo CHtml::link('Экспортировать в CSV', 
-			array('exportTopAuthors', 'ReportForm'=>$_GET), 
-			array('class'=>'btn btn-success', 'target'=>'_blank')); ?></p>
+		<form method="post" action="<?php echo Yii::app()->createUrl('report/exportTopAuthors'); ?>" target="_blank" style="display: inline;">
+			<input type="hidden" name="ReportForm[year_from]" value="<?php echo CHtml::encode($model->year_from); ?>" />
+			<input type="hidden" name="ReportForm[year_to]" value="<?php echo CHtml::encode($model->year_to); ?>" />
+			<input type="hidden" name="ReportForm[genre]" value="<?php echo CHtml::encode($model->genre); ?>" />
+			<input type="hidden" name="ReportForm[author_id]" value="<?php echo CHtml::encode($model->author_id); ?>" />
+			<input type="hidden" name="ReportForm[min_books]" value="<?php echo CHtml::encode($model->min_books); ?>" />
+			<input type="hidden" name="ReportForm[max_books]" value="<?php echo CHtml::encode($model->max_books); ?>" />
+			<button type="submit" class="btn btn-success">Экспортировать в CSV</button>
+		</form>
 	</div>
 </div>
 <?php endif; ?>

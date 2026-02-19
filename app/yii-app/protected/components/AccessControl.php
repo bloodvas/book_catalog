@@ -22,6 +22,7 @@ class AccessControl extends CFilter
                 'site/contact',
                 'site/login',
                 'report/topAuthors',
+                'report/exportTopAuthors',
                 'report/index',
                 'subscription/create',
                 'subscription/subscribe',
