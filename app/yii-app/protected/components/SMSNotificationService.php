@@ -74,31 +74,28 @@ class SMSNotificationService
             'total' => count($subscriptions),
         );
         
-        $messages = array();
-        
+        // Send SMS individually to avoid bulk API issues
         foreach ($subscriptions as $subscription) {
             $formattedPhone = Yii::app()->smspilot->formatPhone($subscription->phone);
             $message = self::formatNewBookMessage($book);
-            $messages[$formattedPhone] = $message;
-        }
-        
-        // Send bulk SMS
-        $result = Yii::app()->smspilot->sendBulkSMS($messages);
-        
-        if (isset($result['error']) && $result['error']) {
-            Yii::log('Bulk SMS notification failed: ' . $result['message'], 'error');
-            $results['failed'] = $results['total'];
-            return $results;
-        }
-        
-        // Process results
-        if (isset($result['send'])) {
-            foreach ($result['send'] as $item) {
-                if (isset($item['status']) && $item['status'] === 0) {
-                    $results['success']++;
-                } else {
-                    $results['failed']++;
+            $result = Yii::app()->smspilot->sendSMS($formattedPhone, $message);
+            
+            if (isset($result['error']) && $result['error']) {
+                $results['failed']++;
+                $errorMessage = 'Unknown error';
+                
+                if (isset($result['error']['description'])) {
+                    $errorMessage = $result['error']['description'];
+                } elseif (isset($result['description'])) {
+                    $errorMessage = $result['description'];
+                } elseif (isset($result['message'])) {
+                    $errorMessage = $result['message'];
                 }
+                
+                Yii::log('SMS notification failed for ' . $subscription->phone . ': ' . $errorMessage, 'error');
+            } else {
+                $results['success']++;
+                Yii::log('SMS notification sent to ' . $subscription->phone . ' about book: ' . $book->title, 'info');
             }
         }
         
@@ -117,10 +114,22 @@ class SMSNotificationService
         $message = "Тестовое сообщение от Book Catalog";
         $formattedPhone = Yii::app()->smspilot->formatPhone($phone);
         
+        Yii::log('SMS Test - Original phone: ' . $phone . ', Formatted: ' . $formattedPhone, 'info');
+        
         $result = Yii::app()->smspilot->sendSMS($formattedPhone, $message);
         
         if (isset($result['error']) && $result['error']) {
-            Yii::log('SMS test failed: ' . $result['message'], 'error');
+            $errorMessage = 'Unknown error';
+            
+            if (isset($result['error']['description'])) {
+                $errorMessage = $result['error']['description'];
+            } elseif (isset($result['description'])) {
+                $errorMessage = $result['description'];
+            } elseif (isset($result['message'])) {
+                $errorMessage = $result['message'];
+            }
+            
+            Yii::log('SMS test failed: ' . $errorMessage, 'error');
             return false;
         }
         

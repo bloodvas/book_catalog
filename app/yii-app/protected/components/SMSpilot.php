@@ -21,9 +21,10 @@ class SMSpilot extends CApplicationComponent
     {
         $params = array(
             'apikey' => $this->apiKey,
-            'send' => $phone,
-            'message' => $message,
+            'send' => $message,
+            'to' => $phone,
             'from' => $this->sender,
+            'format' => 'json',
         );
         
         if ($this->testMode) {
@@ -40,14 +41,20 @@ class SMSpilot extends CApplicationComponent
      */
     public function sendBulkSMS($messages)
     {
-        $params = array(
-            'apikey' => $this->apiKey,
-            'send' => array(),
-        );
+        $allPhones = array();
+        $allMessages = array();
         
         foreach ($messages as $phone => $message) {
-            $params['send'][] = $phone . ':' . $message;
+            $allPhones[] = $phone;
+            $allMessages[] = $message;
         }
+        
+        $params = array(
+            'apikey' => $this->apiKey,
+            'send' => $allMessages,
+            'to' => $allPhones,
+            'format' => 'json',
+        );
         
         if ($this->testMode) {
             $params['test'] = 1;
@@ -77,6 +84,8 @@ class SMSpilot extends CApplicationComponent
      */
     private function makeRequest($params)
     {
+        Yii::log('SMSpilot Request params: ' . json_encode($params), 'info');
+        
         $ch = curl_init();
         
         curl_setopt_array($ch, array(
@@ -106,13 +115,26 @@ class SMSpilot extends CApplicationComponent
         
         $result = json_decode($response, true);
         
+        // If JSON parsing fails, try to parse as text response
         if ($result === null) {
-            Yii::log('SMSpilot API Invalid Response: ' . $response, 'error');
-            return array(
-                'error' => true,
-                'message' => 'Invalid API response',
-                'response' => $response,
-            );
+            // Parse text response like "SUCCESS=APIKEY INFO\nid=44103\n..."
+            $lines = explode("\n", trim($response));
+            $result = array();
+            
+            foreach ($lines as $line) {
+                if (strpos($line, '=') !== false) {
+                    list($key, $value) = explode('=', $line, 2);
+                    $result[$key] = $value;
+                }
+            }
+            
+            // Check for error in text response
+            if (isset($result['ERROR'])) {
+                $result['error'] = true;
+                $result['message'] = $result['ERROR'];
+            } else {
+                $result['error'] = false;
+            }
         }
         
         // Log API response
@@ -131,7 +153,7 @@ class SMSpilot extends CApplicationComponent
         // Remove all non-digit characters
         $phone = preg_replace('/\D/', '', $phone);
         
-        // Add + if missing
+        // Convert 8 to 7 for Russian numbers
         if (strlen($phone) === 11 && substr($phone, 0, 1) === '8') {
             $phone = '7' . substr($phone, 1);
         }
@@ -140,6 +162,7 @@ class SMSpilot extends CApplicationComponent
             $phone = '7' . $phone;
         }
         
-        return '+' . $phone;
+        // Return without + for SMSpilot
+        return $phone;
     }
 }

@@ -59,6 +59,9 @@ class BookController extends Controller
             }
             
             if ($model->save()) {
+                // Notify subscribers about new book
+                BookObserver::notifySubscribers($model);
+                
                 $this->redirect(array('view', 'id' => $model->id));
             }
         }

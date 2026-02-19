@@ -56,8 +56,8 @@ return array(
 
 		'smspilot'=>array(
 			'class'=>'SMSpilot',
-			'apiKey'=>'EMULATOR', // Use EMULATOR for testing, replace with real key for production
-			'sender'=>'BookCatalog',
+			'apiKey'=>'Y4M8I5654RK4M4Z6H300MPVJO5FFVH32QESJE8PSY7EZ969F61DT015N820V416D',
+			'sender'=>'INFORM',
 			'testMode'=>true, // Set to false for production
 		),
 
@@ -71,7 +71,7 @@ return array(
 			'routes'=>array(
 				array(
 					'class'=>'CFileLogRoute',
-					'levels'=>'error, warning',
+					'levels'=>'error, warning, info',
 				),
 				// uncomment the following to show log messages on web pages
 				/*

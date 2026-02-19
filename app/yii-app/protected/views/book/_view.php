@@ -5,7 +5,7 @@
 
 <div class="view">
 	<b><?php echo CHtml::encode($data->getAttributeLabel('title')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($data->title), array('view', 'id'=>$data->id)); ?>
+	<?php echo CHtml::link(CHtml::encode($data->title), array('/book/view', 'id'=>$data->id)); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('year')); ?>:</b>
