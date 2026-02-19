@@ -27,8 +27,6 @@ WORKDIR /var/www/app
 # Install composer dependencies
 COPY app/composer.json app/composer.lock* ./
 RUN composer install --no-dev --optimize-autoloader
-RUN composer create-project --prefer-dist yiisoft/yii basic "1.1.*"
-
 
 # Copy application code
 COPY app/. .

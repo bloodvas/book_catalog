@@ -2,3 +2,10 @@
 /app/vendor
 /tmp
 /_docker/rabbitmq_data
+
+# Yii 1.0 specific
+/app/yii-app/protected/runtime/*
+/app/yii-app/protected/data/*.db
+/app/yii-app/assets/*
+!app/yii-app/assets/.gitkeep
+/app/yii-app/protected/config/local.php
